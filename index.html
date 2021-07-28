@@ -173,7 +173,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-07-28 11:56:03 / 修改时间：11:56:35" itemprop="dateCreated datePublished" datetime="2021-07-28T11:56:03+08:00">2021-07-28</time>
+              <time title="创建时间：2021-07-28 11:56:03 / 修改时间：12:11:03" itemprop="dateCreated datePublished" datetime="2021-07-28T11:56:03+08:00">2021-07-28</time>
             </span>
 
           
@@ -188,31 +188,14 @@
 
       
           <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在hive的学习中接触到了三种很实用的排名函数，这些函数在Mysql8.0版本中也已存在，<br>分别是：Rank()，Dense_rank()，Row_number()，<br>虽然都是排名函数，但三者间的些许差异很容易让人搞混，在这篇文章中，我将基于hive结合一个学生成绩排名的例子来对这三种排名函数进行解释与辨析。</p>
-<h2 id="一、学生成绩表准备"><a href="#一、学生成绩表准备" class="headerlink" title="一、学生成绩表准备"></a>一、学生成绩表准备</h2><p>进行学生表的创建以及样例数据的导入</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> stu(sno <span class="type">varchar</span>(<span class="number">5</span>),score <span class="type">int</span>) <span class="type">row</span> format delimited fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span>;</span><br><span class="line"></span><br><span class="line">load data <span class="keyword">local</span> inpath <span class="string">&#x27;/opt/module/data/stu_score.txt&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> stu;</span><br></pre></td></tr></table></figure>
-<p>查看学生表：<br><img src="https://img-blog.csdnimg.cn/e596afaa4f874d4dabae87e7c5bc607b.png#pic_center" alt="学生表"><br>从数据中可以看出，s01,s03,s06号学生的成绩相同，本文要介绍的这三种排名函数的主要差异就是在对相同成绩的排名时采用不同的处理办法，以至于得到不同的结果。</p>
-<p>接下来就是根据具体例子对三种函数进行讲解。</p>
-<h2 id="二、Rank-函数"><a href="#二、Rank-函数" class="headerlink" title="二、Rank()函数"></a>二、Rank()函数</h2><p>Rank()函数可以根据指定的字段来排序，排序时如果遇到排名字段值相同的情况时，会将相同的归为一组，也就是值相同，排名就是相同的，后面的排名会顺延，总排名数是不会改变的。</p>
-<p>举一个例子：Rank()函数排序可以理解为：每个人先根据成绩高低从左到右坐好座位，座位上先根据人数标好连续的序号，成绩相同的人座位的序号都改为成绩相同的第一个人的座位序号，后面的人座位的的序号还是原来排好的，不会改变。</p>
-<p>使用Rank()函数根据score字段对stu表进行降序排序的sql语句：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sno,score,<span class="built_in">rank</span>() <span class="keyword">over</span> (<span class="keyword">order</span> <span class="keyword">by</span> score <span class="keyword">desc</span>) <span class="keyword">from</span> stu;</span><br></pre></td></tr></table></figure>
-<p>如下图所示，s01,s03,s06号学生成绩都是90分，使用Rank()排名时，他们三个人都是第二名，最后一名s05因为排名顺延，最终排名是第六，即总排名数是不会改变的，总共有六个人，总排名数就是六。</p>
-<p><img src="https://img-blog.csdnimg.cn/c951b2c5b627408dbef7e8e90339f0ae.png#pic_center" alt="rank函数排序结果"></p>
-<h2 id="三、Dense-rank-函数"><a href="#三、Dense-rank-函数" class="headerlink" title="三、Dense_rank()函数"></a>三、Dense_rank()函数</h2><p>Dense_rank()函数可以根据指定的字段来排序，排序时如果遇到排名字段值相同的情况时，会将相同的归为一组，后面的接着前面的排序序号。</p>
-<p>Dense_rank()函数与Rank()函数的不同点在于：即使存在相同字段值的话，排名也不是跳跃的，Dense_rank()函数进行的排名是连续的。也就是相比于Rank()函数，Dense_rank()函数的总排名数会减少。</p>
-<p>举一个例子：Dense_rank()函数排序可以理解为：每个人先根据成绩高低从左到右坐好座位，座位上根据人数标好连续的序号，成绩相同的人座位的序号都改为成绩相同的第一个人的座位序号，后面的人座位的的序号接着前面的人的序号而改变，不保持原来的序号。</p>
-<p>使用Dense_rank()函数根据score字段对stu表进行降序排序的sql语句：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sno,score,<span class="built_in">dense_rank</span>() <span class="keyword">over</span> (<span class="keyword">order</span> <span class="keyword">by</span> score <span class="keyword">desc</span>) <span class="keyword">from</span> stu;</span><br></pre></td></tr></table></figure>
-<p>如下图所示，s01,s03,s06号学生成绩都是90分，使用Dense_rank()排名时，他们三个人都是第二名，s04成为第三名，最后一名s05排名最终排名是第四，即总排名数因为有成绩相同的学生而减少。</p>
-<p><img src="https://img-blog.csdnimg.cn/4e1b359b7ac0437fbbca8269c80168e4.png#pic_center" alt="dense_rank函数排名结果"></p>
-<h2 id="四、Row-number-函数"><a href="#四、Row-number-函数" class="headerlink" title="四、Row_number()函数"></a>四、Row_number()函数</h2><p>Row_number()函数可以根据指定的字段来排序，Row_number()函数比较直接，排好名后，排名序号就是从上到下连续的，比较容易理解。</p>
-<p>再举一个例子：Row_number()函数排序可以理解为：每个人先根据成绩高低从左到右坐好座位，座位上根据人数标好连续的序号，就可以了。</p>
-<p>使用Row_number()函数根据score字段对stu表进行降序排序的sql语句：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sno,score,<span class="built_in">row_number</span>() <span class="keyword">over</span> (<span class="keyword">order</span> <span class="keyword">by</span> score <span class="keyword">desc</span>) <span class="keyword">from</span> stu;</span><br></pre></td></tr></table></figure>
-<p>如下图所示，s01,s03,s06号学生成绩都是90分，使用Row_number()排名时，他们三个人分别是第二第三第四名，没有出现相同排名的情况，最后总排名数与人数相同。</p>
-<p><img src="https://img-blog.csdnimg.cn/47873f211c39403d9cd770a0b18b31da.png#pic_center" alt="row_number函数排名结果"></p>
-<h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><p>不论是在学习工作中还是面试中，hive中排名函数的使用都是一个十分重要的点，应该牢牢掌握。<br>后续会总结出排名函数有关的题目与解答，供大家参考。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/28/%E5%9F%BA%E4%BA%8Ehive%E7%9A%84SQL%E6%8E%92%E5%90%8D%E5%87%BD%E6%95%B0%E8%AF%A6%E8%A7%A3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
