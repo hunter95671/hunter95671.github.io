@@ -20,19 +20,23 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="一、题目现在有“学生成绩表”，记录了学生选修课程的名称以及成绩。现在需要找出语文课中成绩第n高的学生成绩。如果不存在第n高成绩的学生，那么查询应返回 null。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2021/07/15/hello-world/index.html">
+<meta property="og:title" content="使用Hive查询第n高的数据">
+<meta property="og:url" content="http://example.com/2021/08/13/%E4%BD%BF%E7%94%A8Hive%E6%9F%A5%E8%AF%A2%E7%AC%ACn%E9%AB%98%E7%9A%84%E6%95%B0%E6%8D%AE/index.html">
 <meta property="og:site_name" content="hunter95&#39;s blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="一、题目现在有“学生成绩表”，记录了学生选修课程的名称以及成绩。现在需要找出语文课中成绩第n高的学生成绩。如果不存在第n高成绩的学生，那么查询应返回 null。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-07-15T09:59:24.435Z">
-<meta property="article:modified_time" content="2021-07-15T09:59:24.435Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/be69a150026349a487a8583e1158ff90.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1bnRlcjk1Njcx,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/650cd78d89de42e3a20be33e98033ad5.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/3608af5a1f6f42de9f07ff595c1705ae.png#pic_center">
+<meta property="article:published_time" content="2021-08-13T08:54:07.000Z">
+<meta property="article:modified_time" content="2021-08-13T08:54:43.191Z">
 <meta property="article:author" content="hunter95">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/be69a150026349a487a8583e1158ff90.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1bnRlcjk1Njcx,size_16,color_FFFFFF,t_70#pic_center">
 
-<link rel="canonical" href="http://example.com/2021/07/15/hello-world/">
+<link rel="canonical" href="http://example.com/2021/08/13/%E4%BD%BF%E7%94%A8Hive%E6%9F%A5%E8%AF%A2%E7%AC%ACn%E9%AB%98%E7%9A%84%E6%95%B0%E6%8D%AE/">
 
 
 <script id="page-configurations">
@@ -45,7 +49,7 @@
   };
 </script>
 
-  <title>Hello World | hunter95's blog</title>
+  <title>使用Hive查询第n高的数据 | hunter95's blog</title>
   
 
 
@@ -153,7 +157,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/15/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/13/%E4%BD%BF%E7%94%A8Hive%E6%9F%A5%E8%AF%A2%E7%AC%ACn%E9%AB%98%E7%9A%84%E6%95%B0%E6%8D%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author1.jpg">
@@ -166,7 +170,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          使用Hive查询第n高的数据
         </h1>
 
         <div class="post-meta">
@@ -175,8 +179,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-07-15 17:59:24" itemprop="dateCreated datePublished" datetime="2021-07-15T17:59:24+08:00">2021-07-15</time>
+              <time title="创建时间：2021-08-13 16:54:07 / 修改时间：16:54:43" itemprop="dateCreated datePublished" datetime="2021-08-13T16:54:07+08:00">2021-08-13</time>
             </span>
 
           
@@ -190,19 +195,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h2 id="一、题目"><a href="#一、题目" class="headerlink" title="一、题目"></a>一、题目</h2><p>现在有“学生成绩表”，记录了学生选修课程的名称以及成绩。<br>现在需要找出语文课中成绩第n高的学生成绩。如果不存在第n高成绩的学生，那么查询应返回 null。</p>
+<span id="more"></span>
+<h2 id="二、学生成绩表的建立及数据导入"><a href="#二、学生成绩表的建立及数据导入" class="headerlink" title="二、学生成绩表的建立及数据导入"></a>二、学生成绩表的建立及数据导入</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#学生成绩表建立</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> student_score(sno <span class="type">varchar</span>(<span class="number">5</span>),cname <span class="type">varchar</span>(<span class="number">10</span>),score <span class="type">int</span>) <span class="type">row</span> format delimited fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span>;</span><br><span class="line">#数据导入</span><br><span class="line">load data <span class="keyword">local</span> inpath <span class="string">&#x27;/opt/module/data/student_score.txt&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> student_score;</span><br></pre></td></tr></table></figure>
+<p>查询学生成绩表</p>
+<p><img src="https://img-blog.csdnimg.cn/be69a150026349a487a8583e1158ff90.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1bnRlcjk1Njcx,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="三、回顾limit作用及用法"><a href="#三、回顾limit作用及用法" class="headerlink" title="三、回顾limit作用及用法"></a>三、回顾limit作用及用法</h2><p>limit作用：将查询结果集的一部分取出来。通常使用在分页查询当中。<br>完整用法：  <em><strong>limit   startIndex, length</strong></em><br>        startIndex是起始下标，length是取的长度。<br>        起始下标从0开始。<br>        如 limit 5,3  是从第六开始取三个，即取排在6到8位的数据</p>
+<p>缺省用法：如：limit 5; 这是取前5。</p>
+<h2 id="四、查询语文成绩第n高的学生成绩"><a href="#四、查询语文成绩第n高的学生成绩" class="headerlink" title="四、查询语文成绩第n高的学生成绩"></a>四、查询语文成绩第n高的学生成绩</h2><p>需求回顾：现在需要找出语文课中成绩第n高的学生成绩。如果不存在第n高成绩的学生，那么查询应返回 null。<br>如果使用mysql的话是可以使用limit和ifnull来解决该问题的，但是Hive中没有ifnull，在这里我选择使用nvl函数解决了在取不到第n高成绩时取null的要求。</p>
+<p>1、查询语文成绩第二名学生的成绩</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> nvl(score,<span class="keyword">null</span>) score</span><br><span class="line"><span class="keyword">from</span> student_score</span><br><span class="line"><span class="keyword">where</span> cname<span class="operator">=</span><span class="string">&#x27;语文&#x27;</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> score <span class="keyword">desc</span></span><br><span class="line">limit <span class="number">1</span>,<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>第二名为90分</p>
+<p><img src="https://img-blog.csdnimg.cn/650cd78d89de42e3a20be33e98033ad5.png#pic_center" alt="在这里插入图片描述"><br>2、查询数学成绩第五名学生的成绩</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> nvl(score,<span class="keyword">null</span>) score</span><br><span class="line"><span class="keyword">from</span> student_score</span><br><span class="line"><span class="keyword">where</span> cname<span class="operator">=</span><span class="string">&#x27;数学&#x27;</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> score <span class="keyword">desc</span></span><br><span class="line">limit <span class="number">4</span>,<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>因为没有数学成绩第五名的学生，所以返回null</p>
+<p><img src="https://img-blog.csdnimg.cn/3608af5a1f6f42de9f07ff595c1705ae.png#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><p>解决本题要掌握理解limit的作用与用法，便可以灵活应对第n高的这种问题。<br>Hive中的sql语句语法与mysql有的地方存在差异，需要主要，在本题使用order by时就容易出现问题，相关问题将在以后总结发布。</p>
 
     </div>
 
@@ -227,10 +235,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2021/07/28/%E5%9F%BA%E4%BA%8Ehive%E7%9A%84SQL%E6%8E%92%E5%90%8D%E5%87%BD%E6%95%B0%E8%AF%A6%E8%A7%A3/" rel="next" title="基于hive的SQL排名函数详解">
-      基于hive的SQL排名函数详解 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/08/03/%E5%9C%A8hadoop3-1-3%E4%BD%BF%E7%94%A8Flume%E4%B8%8A%E4%BC%A0%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E8%87%B3hdfs%E6%97%B6%E5%87%BA%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" rel="prev" title="在hadoop3.1.3使用Flume上传日志文件至hdfs时出错解决方法">
+      <i class="fa fa-chevron-left"></i> 在hadoop3.1.3使用Flume上传日志文件至hdfs时出错解决方法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/18/Scala%E4%B8%AD%E7%9A%84Option%E7%B1%BB%E5%9E%8B%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B8%8E%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" rel="next" title="Scala中的Option类型的作用与使用方法">
+      Scala中的Option类型的作用与使用方法 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -290,7 +301,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">一、题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AD%A6%E7%94%9F%E6%88%90%E7%BB%A9%E8%A1%A8%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">二、学生成绩表的建立及数据导入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%9B%9E%E9%A1%BElimit%E4%BD%9C%E7%94%A8%E5%8F%8A%E7%94%A8%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">三、回顾limit作用及用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%9F%A5%E8%AF%A2%E8%AF%AD%E6%96%87%E6%88%90%E7%BB%A9%E7%AC%ACn%E9%AB%98%E7%9A%84%E5%AD%A6%E7%94%9F%E6%88%90%E7%BB%A9"><span class="nav-number">4.</span> <span class="nav-text">四、查询语文成绩第n高的学生成绩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">五、总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
