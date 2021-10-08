@@ -148,6 +148,139 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/07/count-1-%E3%80%81count-%E2%80%BB-%E5%92%8Ccount-%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author2.jpg">
+      <meta itemprop="name" content="hunter95">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hunter95's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/07/count-1-%E3%80%81count-%E2%80%BB-%E5%92%8Ccount-%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">count(1)、count(※)和count(指定字段)之间的区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-07 16:05:35 / 修改时间：16:05:59" itemprop="dateCreated datePublished" datetime="2021-10-07T16:05:35+08:00">2021-10-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、count-1-和count"><a href="#一、count-1-和count" class="headerlink" title="一、count(1)和count(*)"></a>一、count(1)和count(*)</h2><p>当表的数据量比较大，对表作分析之后，使用count(1)比使用count(*)用时多。<br>从执行计划看，count(1)和count(*)的效果是一样的。 但是在表做过分析之后，count(1)会比count(<em>)的用时少些。<br>如果count(1)是聚索引,id,那肯定是count(1)快。但是差的很小的。<br>因为count(*),自动会优化指定到那一个字段。所以没必要去count(1)，用count(*)，sql会帮你完成优化，所以count(1)和count(</em>)基本没有差别。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/07/count-1-%E3%80%81count-%E2%80%BB-%E5%92%8Ccount-%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/01/%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E5%8F%8A%E4%B8%80%E4%BA%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author2.jpg">
+      <meta itemprop="name" content="hunter95">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hunter95's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/01/%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E5%8F%8A%E4%B8%80%E4%BA%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">数据倾斜及一些解决方法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-01 13:13:45 / 修改时间：13:14:40" itemprop="dateCreated datePublished" datetime="2021-10-01T13:13:45+08:00">2021-10-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、数据倾斜原理"><a href="#一、数据倾斜原理" class="headerlink" title="一、数据倾斜原理"></a>一、数据倾斜原理</h2><p>做大数据开发，很有可能会遇到数据倾斜的问题，要想解决数据倾斜，首先要理解什么是数据倾斜，以及产生数据倾斜的原因。</p>
+<p>数据倾斜主要是指：主要就是<strong>数据在每个节点上的分配不均</strong>，导致个别节点处理速度很慢，使得程序迟迟不能运行结束。主要表现为：在mapreduce程序执行时，reduce节点大部分执行完毕，但是有一个或者几个reduce节点运行很慢，导致整个程序的处理时间很长，这是因为某一个key中的的条数比其他key要多很多，这条key所在的reduce节点所处理的数据量比其他节点就大很多，从而导致某几个节点迟迟运行不完。<strong>如何将数据均匀的分配到各个reduce节点中，就是解决数据倾斜的根本所在</strong>。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/01/%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E5%8F%8A%E4%B8%80%E4%BA%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/25/Spark%E4%B8%A4%E7%A7%8D%E6%8C%81%E4%B9%85%E5%8C%96%E5%8F%8A%E5%85%B6%E5%8C%BA%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -673,139 +806,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/22/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%881%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author2.jpg">
-      <meta itemprop="name" content="hunter95">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hunter95's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/22/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%881%EF%BC%89/" class="post-title-link" itemprop="url">Spark RDD转换算子-Value类型总结（1）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-08-22 16:10:45 / 修改时间：16:11:37" itemprop="dateCreated datePublished" datetime="2021-08-22T16:10:45+08:00">2021-08-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、map算子"><a href="#一、map算子" class="headerlink" title="一、map算子"></a>一、map算子</h2><p>将处理的数据源的数据逐条进行映射转换，这里的转换可以是类型的转换，也可以是值的转换。<br>map的参数为一个函数。在map转换后，分区是不变的。</p>
-<p>例子：将每个分区的数据都乘以2</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/08/22/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%881%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/19/Windows%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%90%AF%E5%8A%A8spark%E5%87%BA%E9%94%99%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author2.jpg">
-      <meta itemprop="name" content="hunter95">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hunter95's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/19/Windows%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%90%AF%E5%8A%A8spark%E5%87%BA%E9%94%99%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">Windows系统下启动spark出错问题解决方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-08-19 11:32:18 / 修改时间：11:32:56" itemprop="dateCreated datePublished" datetime="2021-08-19T11:32:18+08:00">2021-08-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、报错异常"><a href="#一、报错异常" class="headerlink" title="一、报错异常"></a>一、报错异常</h2><p>问题一：在执行spark-shell时报错，提示java路径问题<br>问题二：执行spark/bin目录下的spark-shell.cmd闪退</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/08/19/Windows%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%90%AF%E5%8A%A8spark%E5%87%BA%E9%94%99%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -877,7 +877,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

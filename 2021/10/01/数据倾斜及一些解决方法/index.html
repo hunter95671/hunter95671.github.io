@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/eprofile-data.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/eprofile-data.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、数据倾斜原理做大数据开发，很有可能会遇到数据倾斜的问题，要想解决数据倾斜，首先要理解什么是数据倾斜，以及产生数据倾斜的原因。 数据倾斜主要是指：主要就是数据在每个节点上的分配不均，导致个别节点处理速度很慢，使得程序迟迟不能运行结束。主要表现为：在mapreduce程序执行时，reduce节点大部分执行完毕，但是有一个或者几个reduce节点运行很慢，导致整个程序的处理时间很长，这是因为某一个k">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据倾斜及一些解决方法">
+<meta property="og:url" content="http://example.com/2021/10/01/%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E5%8F%8A%E4%B8%80%E4%BA%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="hunter95&#39;s blog">
+<meta property="og:description" content="一、数据倾斜原理做大数据开发，很有可能会遇到数据倾斜的问题，要想解决数据倾斜，首先要理解什么是数据倾斜，以及产生数据倾斜的原因。 数据倾斜主要是指：主要就是数据在每个节点上的分配不均，导致个别节点处理速度很慢，使得程序迟迟不能运行结束。主要表现为：在mapreduce程序执行时，reduce节点大部分执行完毕，但是有一个或者几个reduce节点运行很慢，导致整个程序的处理时间很长，这是因为某一个k">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-01T05:13:45.000Z">
+<meta property="article:modified_time" content="2021-10-01T05:14:40.983Z">
+<meta property="article:author" content="hunter95">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/10/01/%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E5%8F%8A%E4%B8%80%E4%BA%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据倾斜及一些解决方法 | hunter95's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">hunter95's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">never say never</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/hunter95671" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/01/%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E5%8F%8A%E4%B8%80%E4%BA%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author2.jpg">
+      <meta itemprop="name" content="hunter95">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hunter95's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据倾斜及一些解决方法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-01 13:13:45 / 修改时间：13:14:40" itemprop="dateCreated datePublished" datetime="2021-10-01T13:13:45+08:00">2021-10-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、数据倾斜原理"><a href="#一、数据倾斜原理" class="headerlink" title="一、数据倾斜原理"></a>一、数据倾斜原理</h2><p>做大数据开发，很有可能会遇到数据倾斜的问题，要想解决数据倾斜，首先要理解什么是数据倾斜，以及产生数据倾斜的原因。</p>
+<p>数据倾斜主要是指：主要就是<strong>数据在每个节点上的分配不均</strong>，导致个别节点处理速度很慢，使得程序迟迟不能运行结束。主要表现为：在mapreduce程序执行时，reduce节点大部分执行完毕，但是有一个或者几个reduce节点运行很慢，导致整个程序的处理时间很长，这是因为某一个key中的的条数比其他key要多很多，这条key所在的reduce节点所处理的数据量比其他节点就大很多，从而导致某几个节点迟迟运行不完。<strong>如何将数据均匀的分配到各个reduce节点中，就是解决数据倾斜的根本所在</strong>。</p>
+<span id="more"></span>
+<h2 id="二、Spark中数据倾斜解决"><a href="#二、Spark中数据倾斜解决" class="headerlink" title="二、Spark中数据倾斜解决"></a>二、Spark中数据倾斜解决</h2><p>以下针对spark具体计算场景，给出数据倾斜解决方案：<br>场 景当RDD执行reduceByKey等聚合类shuffle算子或者在Spark SQL中使用group by语句进行分组聚合时，产生数据倾斜。<br>出现数据倾斜原因：<br>在上述分组场景中，具有相同的key的数据就会被分配到同一个组当中，从而分配到同一分区。如果某些相同key的数据量非常大，而其他是key的数据量相对较小，此时就可能产生比较严重的数据倾斜。<br>本方案通过两个阶段聚合：<br><strong>阶段一：</strong><br>先给每个key都打上一个随机数，比如10以内的随机数，比如(spark,1) (spark, 1) (spark, 1) (spark, 1)，就会变成(1_spark, 1) (1_spark, 1) (2_spark, 1) (2_spark, 1)。打上随机数以后，原先一样的key就变成不一样的了。然后对数据进行reduceByKey等聚合操作，局部聚合结果变成了(1_spark, 2) (2_spark, 2)。<br><strong>阶段二：</strong><br>基于阶段一局部聚合的数据，将各个key的前缀给去掉，就会变成(spark,2)(spark,2)，再次进行全局聚合操作，得到最终结果，比如(spark, 4)。</p>
+<h2 id="三、Hive中数据倾斜"><a href="#三、Hive中数据倾斜" class="headerlink" title="三、Hive中数据倾斜"></a>三、Hive中数据倾斜</h2><p><strong>1.group by导致数据倾斜</strong></p>
+<p>   (1)、设置hive.map.aggr：默认为true，在map端做聚合，推荐使用</p>
+<p>   (2)、设置hive.groupby.skewindata：reduce操作的时候，相同key值并不是都给同一个reduce，而是随机分发到各个reduece做聚合。这个参数其实跟hive.map.aggr做的类似，只是在reduce端做，要额外启动一轮job，不推荐使用</p>
+<p>   (3)、优化sql语句</p>
+<p>有个t表，数据量很大，假如字段a代表的性别，那么只有2个值，对a进行group by操作，所有聚合运行将会落在两个节点上。优化方法，先group by a b，b需要一个比较分散的值，比如班级或者年级，得到一个较小规模的中间结果数据，再对中间结果group by a。</p>
+<p>改写前</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a, <span class="built_in">count</span>(<span class="keyword">distinct</span> b) <span class="keyword">as</span> c <span class="keyword">from</span> t <span class="keyword">group</span> <span class="keyword">by</span> a;</span><br></pre></td></tr></table></figure>
+
+<p>改写后 </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a, <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> c <span class="keyword">from</span> (<span class="keyword">select</span> a, b <span class="keyword">from</span> t <span class="keyword">group</span> <span class="keyword">by</span> a, b) <span class="keyword">group</span> <span class="keyword">by</span> a;</span><br></pre></td></tr></table></figure>
+<p><strong>2.join操作导致数据倾斜</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> logs a <span class="keyword">join</span> users b <span class="keyword">on</span> a.user_id <span class="operator">=</span> b.user_id;</span><br></pre></td></tr></table></figure>
+
+<p>日志表有大量未登陆用户的数据，即user_id为0，reduce时候，某个节将会其他节点多出大量数据，形成单点压力。</p>
+<p>   (1)、设置hive.optimize.skewjoin和hive.skewjoin.key参数 </p>
+<p>其原理把这种user_id为0的特殊值先不在reduce端计算掉，而是先写入hdfs，然后启动一轮map join专门做这个特殊值的计算，期望能提高计算这部分值的处理速度。hive.skewjoin.key设置值比如是1万，那么超过1万条记录的值就是特殊值。</p>
+<p>   (2)、 优化sql，特殊值分开处理</p>
+<p>user_id=0的单独做join，这样user_id=0转化成map join，user_id!=0是没有数据倾斜的普通join。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">     <span class="operator">*</span></span><br><span class="line"> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> logs <span class="keyword">where</span> user_id <span class="operator">=</span> <span class="number">0</span>) a</span><br><span class="line"> <span class="keyword">join</span> (<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> user_id <span class="operator">=</span> <span class="number">0</span>) b <span class="keyword">on</span> a.user_id <span class="operator">=</span> b.user_id</span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> logs a <span class="keyword">join</span> users b <span class="keyword">on</span> a.user_id <span class="operator">&lt;&gt;</span> <span class="number">0</span> <span class="keyword">and</span> a.user_id <span class="operator">=</span> b.user_id;</span><br></pre></td></tr></table></figure>
+
+<p>   (3)、优化sql，特殊值赋予新key</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> logs a</span><br><span class="line"> <span class="keyword">left</span> <span class="keyword">outer</span> <span class="keyword">join</span> users b</span><br><span class="line"> <span class="keyword">on</span></span><br><span class="line">     <span class="keyword">case</span></span><br><span class="line">         <span class="keyword">when</span> a.user_id <span class="keyword">is</span> <span class="keyword">null</span></span><br><span class="line">         <span class="keyword">then</span> concat(<span class="string">&#x27;prefix_&#x27;</span>, rand())</span><br><span class="line">         <span class="keyword">else</span> a.user_id</span><br><span class="line">     <span class="keyword">end</span> <span class="operator">=</span> b.user_id;</span><br></pre></td></tr></table></figure>
+
+<p>   (4)、优化sql，关联key随机打散</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.<span class="operator">*</span>,b.<span class="operator">*</span></span><br><span class="line"> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="operator">*</span>, <span class="built_in">cast</span>(rand() <span class="operator">*</span> <span class="number">10</span> <span class="keyword">as</span> <span class="type">int</span>) <span class="keyword">as</span> r_id <span class="keyword">from</span> logs) a</span><br><span class="line"> <span class="keyword">join</span> (<span class="keyword">select</span> <span class="operator">*</span>, r_id <span class="keyword">from</span> items <span class="keyword">lateral</span> <span class="keyword">view</span> explode(range_list(<span class="number">1</span>, <span class="number">10</span>)) rl <span class="keyword">as</span> r_id) b</span><br><span class="line"> <span class="keyword">on</span> a.item_id <span class="operator">=</span> b.item_id <span class="keyword">and</span> a.r_id <span class="operator">=</span> b.r_id</span><br></pre></td></tr></table></figure>
+
+<p>对行为表的每条记录生成一个1-10的随机整数，对于item属性表，每个item生成10条记录，随机key分别也是1-10，这样就能保证行为表关联上属性表。其中range_list(1,10)代表用udf实现的一个返回1-10整数序列的方法。这个做法是一个解决join倾斜比较根本性的通用思路，就是如何用随机数将key进行分散。 </p>
+<p><strong>3.不同类型关联导致数据倾斜</strong><br>用户表中user_id字段为int，logs表中user_id字段既有string类型也有int类型。当按照user_id进行两个表的Join操作时，默认的Hash操作会按int型的id来进行分配，这样会导致所有string类型id的记录都分配到一个Reducer中。需要把数字类型统一转换成字符串类型。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span>    <span class="operator">*</span> <span class="keyword">from</span> users a</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">outer</span> <span class="keyword">join</span> logs b <span class="keyword">on</span> a.usr_id <span class="operator">=</span> <span class="built_in">cast</span>(b.user_id <span class="keyword">as</span> string)</span><br></pre></td></tr></table></figure>
+<p>4.利用map join解决数据倾斜问题</p>
+<p>   (1)、大小表关联</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">as</span> a <span class="keyword">join</span> logs b  <span class="keyword">on</span> a.user_id <span class="operator">=</span> b.user_id</span><br></pre></td></tr></table></figure>
+
+<p>如果users表只有100行数据，logs表有1亿条数据且数据倾斜特别严重，reduce过程中同样会遇到数据倾斜问题。</p>
+<p>利用map join，会把小表全部读入内存中，在map阶段直接拿另外一个表的数据和内存中表数据做匹配，由于在map是进行了join操作，省去了reduce运行的效率也会高很多。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="comment">/*+ mapjoin(a)*/</span> <span class="keyword">from</span> users <span class="keyword">as</span> a <span class="keyword">join</span> logs b  <span class="keyword">on</span> a.user_id <span class="operator">=</span> b.user_id</span><br></pre></td></tr></table></figure>
+
+<p>   (2)、where条件中存在不等式造成的笛卡尔积</p>
+<p>map join还有一个优势，能够进行不等连接的join操作，如果将不等条件写在where中，那么mapreduce过程中会进行笛卡尔积，运行效率特别低，如果使用map join操作，在map的过程中就完成了不等值的join操作，效率会高很多。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="comment">/*+ mapjoin(a)*/</span> <span class="keyword">from</span> A <span class="keyword">join</span> B <span class="keyword">where</span> A.a<span class="operator">&gt;</span>B.a</span><br></pre></td></tr></table></figure>
+
+<p>   (3)、小表不大大表不小</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> log a <span class="keyword">left</span> <span class="keyword">outer</span> <span class="keyword">join</span> users b <span class="keyword">on</span> a.user_id <span class="operator">=</span> b.user_id;</span><br></pre></td></tr></table></figure>
+
+<p>users 表有 600w+ 的记录，把 users 分发到所有的 map 上也是个不小的开销，而且 map join 不支持这么大的小表。如果用普通的 join，又会碰到数据倾斜的问题。</p>
+<p>log里user_id有上百万个，但每日的会员uv不会太多，有交易的会员不会太多，有点击的会员不会太多，有佣金的会员不会太多等等，可以利用这一特性，通过map join进行优化</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">    <span class="comment">/*+mapjoin(x)*/</span></span><br><span class="line">    <span class="operator">*</span></span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">    logs a</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">outer</span> <span class="keyword">join</span></span><br><span class="line">    (</span><br><span class="line">        <span class="keyword">select</span></span><br><span class="line">            <span class="comment">/*+mapjoin(c)*/</span></span><br><span class="line">            d.<span class="operator">*</span></span><br><span class="line">        <span class="keyword">from</span></span><br><span class="line">            (</span><br><span class="line">                <span class="keyword">select</span> <span class="keyword">distinct</span> user_id <span class="keyword">from</span> logs</span><br><span class="line">            )</span><br><span class="line">            c</span><br><span class="line">        <span class="keyword">join</span> users d</span><br><span class="line">        <span class="keyword">on</span></span><br><span class="line">            c.user_id <span class="operator">=</span> d.user_id</span><br><span class="line">    )</span><br><span class="line">    x <span class="keyword">on</span> a.user_id <span class="operator">=</span> b.user_id; </span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束感谢您的阅读！-------------</div>
+    
+</div>
+
+	  
+	</div>
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/25/Spark%E4%B8%A4%E7%A7%8D%E6%8C%81%E4%B9%85%E5%8C%96%E5%8F%8A%E5%85%B6%E5%8C%BA%E5%88%AB/" rel="prev" title="Spark两种持久化及其区别">
+      <i class="fa fa-chevron-left"></i> Spark两种持久化及其区别
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/07/count-1-%E3%80%81count-%E2%80%BB-%E5%92%8Ccount-%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="next" title="count(1)、count(※)和count(指定字段)之间的区别">
+      count(1)、count(※)和count(指定字段)之间的区别 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">一、数据倾斜原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Spark%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E8%A7%A3%E5%86%B3"><span class="nav-number">2.</span> <span class="nav-text">二、Spark中数据倾斜解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Hive%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C"><span class="nav-number">3.</span> <span class="nav-text">三、Hive中数据倾斜</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hunter95"
+      src="/images/author2.jpg">
+  <p class="site-author-name" itemprop="name">hunter95</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hunter95671" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hunter95671" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/nightmare_dimple" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;nightmare_dimple" rel="noopener" target="_blank"><i class="life-buoy fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hunter95</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='64,224,208' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":false},"log":false});</script></body>
+</html>
