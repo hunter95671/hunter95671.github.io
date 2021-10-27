@@ -148,6 +148,65 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/27/Hive%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AF%94%E8%BE%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author2.jpg">
+      <meta itemprop="name" content="hunter95">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hunter95's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/27/Hive%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AF%94%E8%BE%83/" class="post-title-link" itemprop="url">Hive和数据库比较</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-27 16:30:37 / 修改时间：16:31:05" itemprop="dateCreated datePublished" datetime="2021-10-27T16:30:37+08:00">2021-10-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Hive 和数据库除了拥有类似的查询语言，再无类似之处。<br>1）数据存储位置<br>Hive 存储在 HDFS 。数据库将数据保存在块设备或者本地文件系统中。<br>2）数据更新<br>Hive 中不建议对数据的改写。而数据库中的数据通常是需要经常进行修改的，<br>3）执行延迟<br>Hive 执行延迟较高。数据库的执行延迟较低。当然，这个是有条件的，即数据规模较小，<br>当数据规模大到超过数据库的处理能力的时候，Hive 的并行计算显然能体现出优势。<br>4）数据规模<br>Hive 支持很大规模的数据计算；数据库可以支持的数据规模较小。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/20/Zookeeper%E6%98%AF%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E8%84%91%E8%A3%82%E9%97%AE%E9%A2%98%E7%9A%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -740,72 +799,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/31/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Key-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%881%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author2.jpg">
-      <meta itemprop="name" content="hunter95">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hunter95's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/31/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Key-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%881%EF%BC%89/" class="post-title-link" itemprop="url">Spark RDD转换算子-Key-Value类型总结（1）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-08-31 12:10:57 / 修改时间：12:11:24" itemprop="dateCreated datePublished" datetime="2021-08-31T12:10:57+08:00">2021-08-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、partitionBy算子"><a href="#一、partitionBy算子" class="headerlink" title="一、partitionBy算子"></a>一、partitionBy算子</h2><p>将数据按照指定 Partitioner 重新进行分区。Spark 默认的分区器是 HashPartitioner</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/08/31/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Key-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%881%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -877,7 +870,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
