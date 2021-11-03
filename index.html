@@ -148,6 +148,66 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/03/Hive%E4%B8%AD%E7%9A%84SMB-Sort-Merge-Buket-Join/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author2.jpg">
+      <meta itemprop="name" content="hunter95">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hunter95's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/03/Hive%E4%B8%AD%E7%9A%84SMB-Sort-Merge-Buket-Join/" class="post-title-link" itemprop="url">Hive中的SMB(Sort-Merge-Buket) Join</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-03 18:06:08 / 修改时间：18:06:42" itemprop="dateCreated datePublished" datetime="2021-11-03T18:06:08+08:00">2021-11-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>SMB join （针对bucket mapjoin 的一种优化）<br>条件<br>1）set hive.auto.convert.sortmerge.join=true;<br>set hive.optimize.bucketmapjoin = true;<br>set hive.optimize.bucketmapjoin.sortedmerge = true;<br>set hive.auto.convert.sortmerge.join.noconditionaltask=true;<br>2） 小表的bucket数=大表bucket数<br>3） Bucket 列 ==Join列 == sort 列<br>4） 必须是应用在bucket mapjoin 的场景中</p>
+<p>smb-join基于sorted-merge的有序bucket可实现在map端完成join操作，可以有限地减少或避免shuffle的数据量。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/27/Hive%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AF%94%E8%BE%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -733,76 +793,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/04/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Key-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%882%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author2.jpg">
-      <meta itemprop="name" content="hunter95">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hunter95's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/04/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Key-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%882%EF%BC%89/" class="post-title-link" itemprop="url">Spark RDD转换算子-Key-Value类型总结（2）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-04 11:28:35 / 修改时间：11:29:24" itemprop="dateCreated datePublished" datetime="2021-09-04T11:28:35+08:00">2021-09-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、combineByKey"><a href="#一、combineByKey" class="headerlink" title="一、combineByKey"></a>一、combineByKey</h2><p>最通用的对 key-value 型 rdd 进行聚集操作的聚集函数（aggregation function）。类似于aggregate()，combineByKey()允许用户返回值的类型与输入不一致。<br>combineByKey：需要三个参数<br>第一个参数表示：将相同Key的第一个数据进行结构转换，实现操作，如：v=&gt;(v,1)<br>第二个参数表示：分区内的计算规则<br>第三个参数表示：分区间的计算规则</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/04/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Key-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%882%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -870,7 +864,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
