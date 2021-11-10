@@ -20,21 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="一、报错异常问题一：在执行spark-shell时报错，提示java路径问题问题二：执行spark&#x2F;bin目录下的spark-shell.cmd闪退">
+  <meta name="description" content="一、介绍在我们写一些结构比较复杂的SQL语句时，可能某个子查询在多个地方有重复使用的情况，这个时候我们可以使用 with as 语句将其独立出来，极大提高SQL可读性，简化SQLwith as 也叫做子查询部分，首先定义一个sql片段，该sql片段会被整个sql语句所用到，让sql语句的可读性更高些，作为提供数据的部分，也常用在union等操作中。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Windows系统下启动spark出错问题解决方法">
-<meta property="og:url" content="http://example.com/2021/08/19/Windows%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%90%AF%E5%8A%A8spark%E5%87%BA%E9%94%99%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:title" content="Hive中的with as使用">
+<meta property="og:url" content="http://example.com/2021/11/10/Hive%E4%B8%AD%E7%9A%84with-as%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="hunter95&#39;s blog">
-<meta property="og:description" content="一、报错异常问题一：在执行spark-shell时报错，提示java路径问题问题二：执行spark&#x2F;bin目录下的spark-shell.cmd闪退">
+<meta property="og:description" content="一、介绍在我们写一些结构比较复杂的SQL语句时，可能某个子查询在多个地方有重复使用的情况，这个时候我们可以使用 with as 语句将其独立出来，极大提高SQL可读性，简化SQLwith as 也叫做子查询部分，首先定义一个sql片段，该sql片段会被整个sql语句所用到，让sql语句的可读性更高些，作为提供数据的部分，也常用在union等操作中。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/944203b87ac24e9e9bc02f1cdb86a071.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1bnRlcjk1Njcx,size_16,color_FFFFFF,t_70#pic_center">
-<meta property="article:published_time" content="2021-08-19T03:32:18.000Z">
-<meta property="article:modified_time" content="2021-08-19T03:32:56.125Z">
+<meta property="article:published_time" content="2021-11-10T03:04:34.000Z">
+<meta property="article:modified_time" content="2021-11-10T03:04:51.234Z">
 <meta property="article:author" content="hunter95">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/944203b87ac24e9e9bc02f1cdb86a071.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1bnRlcjk1Njcx,size_16,color_FFFFFF,t_70#pic_center">
 
-<link rel="canonical" href="http://example.com/2021/08/19/Windows%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%90%AF%E5%8A%A8spark%E5%87%BA%E9%94%99%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+<link rel="canonical" href="http://example.com/2021/11/10/Hive%E4%B8%AD%E7%9A%84with-as%E4%BD%BF%E7%94%A8/">
 
 
 <script id="page-configurations">
@@ -47,7 +45,7 @@
   };
 </script>
 
-  <title>Windows系统下启动spark出错问题解决方法 | hunter95's blog</title>
+  <title>Hive中的with as使用 | hunter95's blog</title>
   
 
 
@@ -155,7 +153,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/19/Windows%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%90%AF%E5%8A%A8spark%E5%87%BA%E9%94%99%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/10/Hive%E4%B8%AD%E7%9A%84with-as%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author2.jpg">
@@ -168,7 +166,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Windows系统下启动spark出错问题解决方法
+          Hive中的with as使用
         </h1>
 
         <div class="post-meta">
@@ -179,7 +177,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-08-19 11:32:18 / 修改时间：11:32:56" itemprop="dateCreated datePublished" datetime="2021-08-19T11:32:18+08:00">2021-08-19</time>
+              <time title="创建时间：2021-11-10 11:04:34 / 修改时间：11:04:51" itemprop="dateCreated datePublished" datetime="2021-11-10T11:04:34+08:00">2021-11-10</time>
             </span>
 
           
@@ -193,12 +191,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="一、报错异常"><a href="#一、报错异常" class="headerlink" title="一、报错异常"></a>一、报错异常</h2><p>问题一：在执行spark-shell时报错，提示java路径问题<br>问题二：执行spark/bin目录下的spark-shell.cmd闪退</p>
-<span id="more"></span>
-<h2 id="二、解决方法"><a href="#二、解决方法" class="headerlink" title="二、解决方法"></a>二、解决方法</h2><p>首先要保证spark路径上没有中文和空格。</p>
-<p>遇到问题一在执行spark-shell时报错，提示java路径问题时，先确认JAVA_HOME的路径中是否有中文与空格，将环境变量修改正确重试即可。</p>
-<p>遇到问题二在执行spark/bin目录下的spark-shell.cmd后闪退，可以尝试使用管理员身份运行</p>
-<p>启动成功！<br><img src="https://img-blog.csdnimg.cn/944203b87ac24e9e9bc02f1cdb86a071.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1bnRlcjk1Njcx,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+        <h2 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h2><p>在我们写一些结构比较复杂的SQL语句时，可能某个子查询在多个地方有重复使用的情况，这个时候我们可以使用 with as 语句将其独立出来，极大提高SQL可读性，简化SQL<br>with as 也叫做<strong>子查询</strong>部分，首先定义一个sql片段，该sql片段会被整个sql语句所用到，让sql语句的可读性更高些，作为提供数据的部分，也常用在union等操作中。<br> <span id="more"></span><br>with as就类似于一个视图或临时表，可以用来存储一部分的sql语句作为别名，不同的是with as 属于一次性的，而且必须要和其他sql一起使用才可以！</p>
+<p>其最大的好处就是适当的提高代码可读性，而且如果with子句在后面要多次使用到，这可以大大的简化SQL；更重要的是：一次分析，多次使用，这也是为什么会提供性能的地方，达到了“少读”的目标。</p>
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> t1 <span class="keyword">as</span> (</span><br><span class="line">		<span class="keyword">select</span> <span class="operator">*</span></span><br><span class="line">		<span class="keyword">from</span> user_info</span><br><span class="line">	), </span><br><span class="line">	t2 <span class="keyword">as</span> (</span><br><span class="line">		<span class="keyword">select</span> <span class="operator">*</span></span><br><span class="line">		<span class="keyword">from</span> goods_list</span><br><span class="line">	)</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">from</span> t1, t2</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里必须要整体作为一条sql查询，即with as语句后不能加分号，不然会报错。</p>
 
     </div>
 
@@ -224,13 +221,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/08/18/Scala%E4%B8%AD%E7%9A%84Option%E7%B1%BB%E5%9E%8B%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B8%8E%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" rel="prev" title="Scala中的Option类型的作用与使用方法">
-      <i class="fa fa-chevron-left"></i> Scala中的Option类型的作用与使用方法
+    <a href="/2021/11/03/Hive%E4%B8%AD%E7%9A%84SMB-Sort-Merge-Buket-Join/" rel="prev" title="Hive中的SMB(Sort-Merge-Buket) Join">
+      <i class="fa fa-chevron-left"></i> Hive中的SMB(Sort-Merge-Buket) Join
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/08/22/Spark-RDD%E8%BD%AC%E6%8D%A2%E7%AE%97%E5%AD%90-Value%E7%B1%BB%E5%9E%8B%E6%80%BB%E7%BB%93%EF%BC%881%EF%BC%89/" rel="next" title="Spark RDD转换算子-Value类型总结（1）">
-      Spark RDD转换算子-Value类型总结（1） <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -289,7 +283,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%8A%A5%E9%94%99%E5%BC%82%E5%B8%B8"><span class="nav-number">1.</span> <span class="nav-text">一、报错异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">二、解决方法</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">一、介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">二、使用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
