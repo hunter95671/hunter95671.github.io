@@ -20,15 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="hunter95&#39;s blog">
-<meta property="og:url" content="http://example.com/archives/2021/11/index.html">
+  <meta name="description" content="一、OLTP与OLAP数据处理大致可以分成两大类：联机事务处理OLTP（on-line transaction processing）、联机分析处理OLAP（On-Line Analytical Processing）。OLTP是传统的关系型数据库的主要应用，主要是基本的、日常的事务处理，例如银行交易。OLAP是数据仓库系统的主要应用，支持复杂的分析操作，侧重决策支持，并且提供直观易懂的查询结果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OLAP、OLTP的介绍和比较">
+<meta property="og:url" content="http://example.com/2021/11/24/OLAP%E3%80%81OLTP%E7%9A%84%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%AF%94%E8%BE%83/index.html">
 <meta property="og:site_name" content="hunter95&#39;s blog">
+<meta property="og:description" content="一、OLTP与OLAP数据处理大致可以分成两大类：联机事务处理OLTP（on-line transaction processing）、联机分析处理OLAP（On-Line Analytical Processing）。OLTP是传统的关系型数据库的主要应用，主要是基本的、日常的事务处理，例如银行交易。OLAP是数据仓库系统的主要应用，支持复杂的分析操作，侧重决策支持，并且提供直观易懂的查询结果。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-24T01:58:33.000Z">
+<meta property="article:modified_time" content="2021-11-24T01:59:08.224Z">
 <meta property="article:author" content="hunter95">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/2021/11/">
+<link rel="canonical" href="http://example.com/2021/11/24/OLAP%E3%80%81OLTP%E7%9A%84%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%AF%94%E8%BE%83/">
 
 
 <script id="page-configurations">
@@ -36,12 +40,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | hunter95's blog</title>
+  <title>OLAP、OLTP的介绍和比较 | hunter95's blog</title>
   
 
 
@@ -142,90 +146,88 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 23 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/24/OLAP%E3%80%81OLTP%E7%9A%84%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%AF%94%E8%BE%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author2.jpg">
+      <meta itemprop="name" content="hunter95">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hunter95's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OLAP、OLTP的介绍和比较
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-24 09:58:33 / 修改时间：09:59:08" itemprop="dateCreated datePublished" datetime="2021-11-24T09:58:33+08:00">2021-11-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-11-24T09:58:33+08:00"
-              content="2021-11-24">
-          11-24
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/11/24/OLAP%E3%80%81OLTP%E7%9A%84%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%AF%94%E8%BE%83/" itemprop="url">
-            <span itemprop="name">OLAP、OLTP的介绍和比较</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-11-10T11:04:34+08:00"
-              content="2021-11-10">
-          11-10
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/11/10/Hive%E4%B8%AD%E7%9A%84with-as%E4%BD%BF%E7%94%A8/" itemprop="url">
-            <span itemprop="name">Hive中的with as使用</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-11-03T18:06:08+08:00"
-              content="2021-11-03">
-          11-03
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/11/03/Hive%E4%B8%AD%E7%9A%84SMB-Sort-Merge-Buket-Join/" itemprop="url">
-            <span itemprop="name">Hive中的SMB(Sort-Merge-Buket) Join</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <h2 id="一、OLTP与OLAP"><a href="#一、OLTP与OLAP" class="headerlink" title="一、OLTP与OLAP"></a>一、OLTP与OLAP</h2><p>数据处理大致可以分成两大类：<strong>联机事务处理OLTP</strong>（on-line transaction processing）、<strong>联机分析处理OLAP</strong>（On-Line Analytical Processing）。<strong>OLTP是传统的关系型数据库的主要应用</strong>，主要是<strong>基本的、日常的事务处理</strong>，例如银行交易。<strong>OLAP是数据仓库系统的主要应用</strong>，支持复杂的分析操作，<strong>侧重决策支持</strong>，<strong>并且提供直观易懂的查询结果</strong>。 </p>
+<h2 id="二、OLTP与OLAP之间的比较"><a href="#二、OLTP与OLAP之间的比较" class="headerlink" title="二、OLTP与OLAP之间的比较"></a>二、OLTP与OLAP之间的比较</h2><p>联机事务处理（OLTP,On-line Transaction Processing）：<br>数据量少，GB到PB；小批量随机读写；并行事务处理多；数据保留最新状态；面向用户。<br>联机分析处理（OLAP,On-line Analytical Processing）：<br>数据量大，PB及以上；大批量数据读写；数据保留历史状态；面向内部的分析人员。</p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束感谢您的阅读！-------------</div>
+    
+</div>
+
+	  
+	</div>
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/10/Hive%E4%B8%AD%E7%9A%84with-as%E4%BD%BF%E7%94%A8/" rel="prev" title="Hive中的with as使用">
+      <i class="fa fa-chevron-left"></i> Hive中的with as使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -278,6 +280,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81OLTP%E4%B8%8EOLAP"><span class="nav-number">1.</span> <span class="nav-text">一、OLTP与OLAP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81OLTP%E4%B8%8EOLAP%E4%B9%8B%E9%97%B4%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">2.</span> <span class="nav-text">二、OLTP与OLAP之间的比较</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
