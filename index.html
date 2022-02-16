@@ -148,6 +148,76 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/Hive%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author2.jpg">
+      <meta itemprop="name" content="hunter95">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hunter95's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/16/Hive%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">Hive中常用的系统函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-02-16 11:33:00 / 修改时间：11:33:36" itemprop="dateCreated datePublished" datetime="2022-02-16T11:33:00+08:00">2022-02-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>常用日期函数<br>unix_timestamp:返回当前或指定时间的时间戳<br>select unix_timestamp();<br>select unix_timestamp(“2020-10-28”,’yyyy-MM-dd’);</p>
+<p>from_unixtime：将时间戳转为日期格式<br>select from_unixtime(1603843200);</p>
+<p>current_date：当前日期<br>select current_date;</p>
+<p>current_timestamp：当前的日期加时间<br>select current_timestamp;</p>
+<p>to_date：抽取日期部分<br>select to_date(‘2020-10-28 12:12:12’);<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/02/16/Hive%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/09/Hive%E7%9A%84%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -726,66 +796,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/24/OLAP%E3%80%81OLTP%E7%9A%84%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%AF%94%E8%BE%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author2.jpg">
-      <meta itemprop="name" content="hunter95">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hunter95's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/24/OLAP%E3%80%81OLTP%E7%9A%84%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%AF%94%E8%BE%83/" class="post-title-link" itemprop="url">OLAP、OLTP的介绍和比较</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-11-24 09:58:33 / 修改时间：09:59:08" itemprop="dateCreated datePublished" datetime="2021-11-24T09:58:33+08:00">2021-11-24</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、OLTP与OLAP"><a href="#一、OLTP与OLAP" class="headerlink" title="一、OLTP与OLAP"></a>一、OLTP与OLAP</h2><p>数据处理大致可以分成两大类：<strong>联机事务处理OLTP</strong>（on-line transaction processing）、<strong>联机分析处理OLAP</strong>（On-Line Analytical Processing）。<strong>OLTP是传统的关系型数据库的主要应用</strong>，主要是<strong>基本的、日常的事务处理</strong>，例如银行交易。<strong>OLAP是数据仓库系统的主要应用</strong>，支持复杂的分析操作，<strong>侧重决策支持</strong>，<strong>并且提供直观易懂的查询结果</strong>。 </p>
-<h2 id="二、OLTP与OLAP之间的比较"><a href="#二、OLTP与OLAP之间的比较" class="headerlink" title="二、OLTP与OLAP之间的比较"></a>二、OLTP与OLAP之间的比较</h2><p>联机事务处理（OLTP,On-line Transaction Processing）：<br>数据量少，GB到PB；小批量随机读写；并行事务处理多；数据保留最新状态；面向用户。<br>联机分析处理（OLAP,On-line Analytical Processing）：<br>数据量大，PB及以上；大批量数据读写；数据保留历史状态；面向内部的分析人员。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -857,7 +867,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
