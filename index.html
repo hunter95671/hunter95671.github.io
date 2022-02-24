@@ -148,6 +148,66 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/Hive%E8%A1%8C%E8%BD%AC%E5%88%97%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%97%E8%BD%AC%E8%A1%8C%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author2.jpg">
+      <meta itemprop="name" content="hunter95">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hunter95's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/24/Hive%E8%A1%8C%E8%BD%AC%E5%88%97%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%97%E8%BD%AC%E8%A1%8C%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">Hive行转列函数与列转行函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-02-24 10:15:49 / 修改时间：10:16:04" itemprop="dateCreated datePublished" datetime="2022-02-24T10:15:49+08:00">2022-02-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="行转列"><a href="#行转列" class="headerlink" title="行转列"></a>行转列</h2><p>concat(string,string……)：字符串连接<br>concat_ws(参数1，string,string…..)：参数1是分隔符,按分隔符分隔连接字符串<br>collect_set(字段名)：将字段的值去重，产生array类型字段</p>
+<h2 id="列转行"><a href="#列转行" class="headerlink" title="列转行"></a>列转行</h2><p>Explode(字段名)：将某列中的array或map拆分成多行<br>Split(字段名,分隔符)：根据分隔符来切分某字段元素<br>Lateral view：写在split,explode等UDTF前，将一列数据拆成多行，再聚合</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/Hive%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -729,73 +789,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/01/Hive%E7%9A%84%E6%9E%B6%E6%9E%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%BB%84%E6%88%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author2.jpg">
-      <meta itemprop="name" content="hunter95">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hunter95's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/01/Hive%E7%9A%84%E6%9E%B6%E6%9E%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%BB%84%E6%88%90/" class="post-title-link" itemprop="url">Hive的架构原理及组成</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-12-01 10:11:49 / 修改时间：10:12:51" itemprop="dateCreated datePublished" datetime="2021-12-01T10:11:49+08:00">2021-12-01</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、Hive架构图"><a href="#一、Hive架构图" class="headerlink" title="一、Hive架构图"></a>一、Hive架构图</h2><p><img src="https://img-blog.csdnimg.cn/20d9cf902ff3497e82913130c2844898.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAaHVudGVyOTU2NzE=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h2 id="二、架构组成"><a href="#二、架构组成" class="headerlink" title="二、架构组成"></a>二、架构组成</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/01/Hive%E7%9A%84%E6%9E%B6%E6%9E%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%BB%84%E6%88%90/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -867,7 +860,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
